@@ -1,0 +1,21 @@
+terraform {
+  backend "s3" {
+    bucket = "s3backend187"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+    encrypt = true
+    dynamodb_table = "terraform-locks"
+    profile = "B-34"
+  }
+}
+
+resource "aws_instance" "vm-2" {
+  ami               = var.ami
+  instance_type     = var.instance_type
+  availability_zone = var.availability_zone
+  key_name          = var.key_name
+
+  tags = {
+    Name = var.tags
+  }
+}
