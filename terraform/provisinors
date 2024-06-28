@@ -1,0 +1,35 @@
+provisioner "file" {
+    source      = "file.log"
+    destination = "/tmp/file.log"
+
+    connection {
+      type = "ssh"
+      user = "ec2-user"
+      host = self.public_ip
+      private_key = file("~/home/aditya/.ssh/id_rsa")
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "echo ${"THIS IS MY WORK"} > /tmp/file.log"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "#!/bin/bash",
+      "sudo yum install nginx -y",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx"
+    ]
+
+    connection {
+      type = "ssh"
+      user = "ec2-user"
+      host = self.public_ip
+      private_key = file("~/home/aditya/.ssh/id_rsa")
+    }
+  }
+
+  depends_on = [aws_instance.vm-2]
+
+}
