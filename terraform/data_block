@@ -1,0 +1,43 @@
+provider "aws" {
+  region  = "us-east-1"
+  profile = "B-34"
+}
+
+resource "aws_instance" "server" {
+  ami           = data.aws_ami.web.id
+  instance_type = "t4g.micro"
+  key_name      = "B-34"
+
+  tags = {
+    Name = "vm-1"
+  }
+}
+
+
+data "aws_ami" "web" {
+  most_recent = true
+  owners      = ["137112412989"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023.5.20240624.0-kernel-*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+output "instance_id" {
+  value = aws_instance.server.id
+}
+
+output "instance_public_ip" {
+  value = aws_instance.server.public_ip
+}
