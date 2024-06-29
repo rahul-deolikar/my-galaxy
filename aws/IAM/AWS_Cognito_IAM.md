@@ -1,4 +1,6 @@
  **What is AWS Cognito, and how does it relate to IAM in the context of user identity and authentication?**
+
+ 
  ***AWS Cognito***:- is a service that provides authentication, authorization, and user management for web and mobile applications. 
  It allows you to securely manage and synchronize app data for your users across their devices.
 
