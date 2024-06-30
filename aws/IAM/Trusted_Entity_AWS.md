@@ -1,8 +1,9 @@
 ***What is trusted entity in aws***
 
-***Trusted Entity in AWS
+***Trusted Entity in AWS***
+
 A trusted entity in AWS refers to an AWS principal that is allowed to assume an IAM role. The trusted entity is defined in the trust policy of the IAM role. 
-The trust policy specifies which principals (users, roles, or services) are allowed to assume the role and under what conditions***
+The trust policy specifies which principals (users, roles, or services) are allowed to assume the role and under what conditions
 
 ***Components of a Trusted Entity***
 
