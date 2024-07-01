@@ -1,6 +1,6 @@
 Limit to attach max no of policies to IAM roles
 
-Maximum number of managed policies that can be attached to an IAM role: 10
+Maximum number of managed policies that can be attached to an IAM role: MIN. 20 to MAX 2048
 
 
 ***Best Practices***
