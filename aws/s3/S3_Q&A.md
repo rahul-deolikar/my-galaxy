@@ -13,15 +13,23 @@ It has wide range of use cases such as backup, archives, big data analytics and 
 **Q2> Explain the structure of an S3 object's URL (Uniform Resource Locator)?**
 
 S3 object url follows a specific format which indicates bucket location, specific object inside the bucket
-and the region in which the bucket resides. URL contains https://<bucket-name>.s3.region.amazonaws.com/<object-key>
+and the region in which the bucket resides. URL contains h``ttps://<bucket-name>.s3.region.amazonaws.com/<object-key>``
+
 **1. https://** Denotes the secure https protocol 
+
 **2 <bucket-name>** Denotes the name of the bucket
+
 **3. .s3.** Denotes the s3 service.
+
 **4. region** Denotes The region in which the domain resides.
+
 **5. amazonaws.com** Is the domain name of the amazon aws cloud.
+
 **6. /** Separates the the bucket information and object information
+
 **7. <object-key>** Is the  object identifier which specifies the specific object inside the bucket.
 
+-----------------------------------------------------------------------
 
 **Q3> What are the different storage classes available in Amazon S3, and when would you use each one?**
 
