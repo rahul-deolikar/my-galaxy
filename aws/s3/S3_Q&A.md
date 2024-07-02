@@ -34,11 +34,15 @@ and the region in which the bucket resides. URL contains ``https://<bucket-name>
 **Q3> What are the different storage classes available in Amazon S3, and when would you use each one?**
 
 ***1) S3 Standard:*** It is the most frequently used storage class. It is used to store data or object which requires frequent access and it provides durability of 99.9999% and availability of 99.99%.
+
 ***2) S3 Standard -IA:** This storage class is used to store data which does not require frequent access. It has same features as S3-Standard but is more cost-efficient,but their is an retrival fees to retrive the data or objects in this storage class. (IA stands for infrequent access).
+
 ***3) S3 Intelligent-Teering:*** This storage class organizes data or objects in different classes such as S3-Standard, S3-Standard-IA and Glacier according to the retrival of the data.Data with more retrival frequency will be stored in standard while with less requirement data will be in IA and glacier to manage cost efficiently.There is no retrival fees in this class.
+
 ***4) S3 Glacier:*** This storage class provides very low cost for storage and is mostly used for very less accessed data and has two options for retrieval.
-            ***a. Instant retrieval:*** This offers retrieval data in **minutes-hours** with **slightly more cost**  than flexible.
-            ***b. Flexible retrieval:*** It offers retrieval of data in **3-12 hours** with **slightly less cost.**
+
+  ***a. Instant retrieval:*** This offers retrieval data in **minutes-hours** with **slightly more cost**than flexible.
+  ***b. Flexible retrieval:*** It offers retrieval of data in **3-12 hours** with **slightly less cost.***
                            
 ***5) S3 Glacier Deep Dive:*** This storage class provides **lowest cost for storage** of data or objects for data which **does not require retrieval for months or years** and has **retrieval time for 12 hours.**
                                                 
