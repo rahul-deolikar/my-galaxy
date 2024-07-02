@@ -17,7 +17,7 @@ and the region in which the bucket resides. URL contains ``https://<bucket-name>
 
 **1. https://** Denotes the secure https protocol 
 
-**2 bucket-name** Denotes the name of the bucket
+**2  bucket-name** Denotes the name of the bucket
 
 **3. .s3.** Denotes the s3 service.
 
@@ -27,7 +27,7 @@ and the region in which the bucket resides. URL contains ``https://<bucket-name>
 
 **6. /** Separates the the bucket information and object information
 
-**7. <object-key>** Is the  object identifier which specifies the specific object inside the bucket.
+**7.  object-key** Is the  object identifier which specifies the specific object inside the bucket.
 
 -----------------------------------------------------------------------
 
