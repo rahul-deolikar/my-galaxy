@@ -70,8 +70,8 @@ server1 ansible_host = ip
 [all:vars]
 ansible_paython_interpreter = path
 --------------------------------------------
-# ansible-inventery  --list -y
-# test connection
-  ansible all -m ping -u root or --private-key = path
-  ansible all -a "of -h"
-  ansible server -a "uptime"
+ ``ansible-inventery  --list -y``
+ test connection
+``ansible all -m ping -u root or --private-key = path``
+  ``ansible all -a "of -h"``
+ `` ansible server -a "uptime"``
