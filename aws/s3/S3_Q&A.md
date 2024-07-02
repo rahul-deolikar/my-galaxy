@@ -58,9 +58,13 @@ and the region in which the bucket resides. URL contains ``https://<bucket-name>
 **Q5> What is S3 data consistency, and how does it work in different scenarios (e.g., read-after-write consistency, eventual consistency)?**
 
 S3 data consistency refers to how fast the data updates can be reflected after we read the data. It consists of two methods of data consistency
+
 **1)Strong consistency:** When we write,update or delete the object in the bucket and we request the object then s3 will immideately provide the latest update of the object or deletion msg.
+
 **scenarios:** When we write and save the object we get OK response and then immidetiatly if we use get request we will get the updated objects.
+
 **2)Eventual consistency:** Eventual consistency mostly will complete the request after short delay because it used cached data and it might take slight time for the request to be completed as it may take some time to update the cached data. time to update the cached data.
+
 ----------------------------------------------------------------------------
 
 **Q6> How do you secure data stored in an S3 bucket, and what are the key access control mechanisms in S3?**
