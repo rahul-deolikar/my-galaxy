@@ -36,3 +36,22 @@
 - Lists of tasks saved to run in order.
 - Written in an easy-to-read format called YAML.
 - Can include variables and multiple tasks.
+
+**What is Ansible**
+- It is configuration managment tool, open-source
+- use yaml scripting
+- works on push managment
+- One master can control configuration of manyservers.
+- It is agentless and communicate through SSH.
+- Script are called playbook.
+- light weight.
+- automation friendly.
+
+**Important**
+1. Ansible-server - the machine where ansible is installed && Playbook can be run here.
+2. Module - command or sets of commands to be executed clint side.
+3. Inventory - fillcontaing data about client side.
+4. Play - execution of playbook.
+5. Ad Hoc commands - can be perform a quick function.
+6. Inventory file location -> /etc/ansible/hosts.
+   
