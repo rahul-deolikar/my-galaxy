@@ -54,4 +54,24 @@
 4. Play - execution of playbook.
 5. Ad Hoc commands - can be perform a quick function.
 6. Inventory file location -> /etc/ansible/hosts.
-   
+
+
+[On master]
+steps: 
+``sudo apt update``
+``sudo apt install ansible -y``
+
+Open inventory file
+``sudo vim /etc/ansible/hosts``
+
+[servers]
+server1 ansible_host = ip
+
+[all:vars]
+ansible_paython_interpreter = path
+--------------------------------------------
+# ansible-inventery  --list -y
+# test connection
+  ansible all -m ping -u root or --private-key = path
+  ansible all -a "of -h"
+  ansible server -a "uptime"
