@@ -1,6 +1,6 @@
 # Tomcat installation
 
-``
+```
 ---
 - name: install tomcat
   hosts: all
@@ -38,4 +38,4 @@
     - name: Start tomcat service
       shell:  bash /home/ec2-user/apache-tomcat-8.5.100/bin/catalina.sh start
 
-      ``
+      ```
