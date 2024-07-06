@@ -64,11 +64,11 @@ git branch -d <branchname>
 ````
 **pull remote repository to local**
 ````
-git pull https://github.com/rahul-deolikar/Project-Student-App.git
+git pull https://github.com/abhipraydhoble/Project-Student-App.git
 ````
 **fetch remote repository to local**
 ````
-git fetch https://github.com/rahul-deolikar/Project-Student-App.git
+git fetch https://github.com/abhipraydhoble/Project-Student-App.git
 ````
 **stash command**
 ````
