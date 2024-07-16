@@ -4,21 +4,35 @@ metadata:
   name: rs-demo
   labels:
     app: nginx-app
-
 spec:
-  replicas: 4
+  replicas: 3
   selector:
-    matchLabels:
-      app: nginx-app
-      env: dev
+   matchExpressions:
+     - key: app
+       operator: In
+       values:
+         - nginx-app
   template:
-     metadata:
-       labels:
-         app: nginx-app
-         env: dev
-     spec:
-       containers:
-       - name: nginx
-         image: nginx
-         ports:
-         - containerPort: 80
+    metadata:
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+        - name: nginx-container-1
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+
+
+
+``` 
+kubectl apply -f <ReplicaSet.yaml>
+```
+
+```
+kubectl get rs/replicaset
+```
+
+```
+kubectl describe rs
+```
