@@ -70,20 +70,6 @@ git pull https://github.com/abhipraydhoble/Project-Student-App.git
 ````
 git fetch https://github.com/abhipraydhoble/Project-Student-App.git
 ````
-**stash command**
-````
-git stash
-git stash apply
-git stash apply stash@{1}
-````
-**cherry-pick command**
-````
-git cherry-pick commit-id
-````
-**git revert**
-````
-git revert commit-id
-````
 
 
 
