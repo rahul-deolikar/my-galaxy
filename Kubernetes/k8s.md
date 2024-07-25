@@ -48,3 +48,22 @@ Expose Service
 ```
 kubectl expose <pod-name> --port=8000 --target-port=80 --name <service-name/myfstservice>
 ```
+To check services
+
+```
+kubectl get service
+```
+```
+kubectl get svc
+```
+
+To expose Nodeport(service)
+
+```
+kubectl expose <pod-name> --type=NodePort --port=8000 --target-port=80 --name <service-nm/myservice>
+```
+To check service status
+
+```
+kubectl get svc
+```
