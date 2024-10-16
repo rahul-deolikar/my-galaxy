@@ -1,0 +1,57 @@
+pipeline {
+    agent any
+    environment {
+        REGISTRY = 'my-docker-registry'
+        IMAGE = 'my-app'
+        TAG = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker build -t $REGISTRY/$IMAGE:$TAG .'
+            }
+        }
+        stage('Unit Tests') {
+            steps {
+                sh 'npm run test' // Replace with appropriate test command
+            }
+        }
+        stage('Static Code Analysis') {
+            steps {
+                sh 'npm run lint' // Replace with SonarQube or similar if needed
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                sh 'snyk test' // Example using Snyk
+            }
+        }
+        stage('Push to Registry') {
+            steps {
+                sh 'docker push $REGISTRY/$IMAGE:$TAG'
+            }
+        }
+        stage('Notify PR Results') {
+            steps {
+                slackSend message: "Build $env.BUILD_NUMBER for branch $env.BRANCH_NAME completed."
+            }
+        }
+    }
+    post {
+        always {
+            junit '**/test-results.xml'
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+        }
+        success {
+            slackSend message: "Build successful for branch $env.BRANCH_NAME"
+        }
+        failure {
+            slackSend message: "Build failed for branch $env.BRANCH_NAME"
+        }
+    }
+}
