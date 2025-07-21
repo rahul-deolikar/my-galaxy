@@ -73,11 +73,7 @@ def test_lambda_function_with_s3_error():
     """Test the Lambda function with S3 error"""
     
     # Mock the S3 client to simulate an error
-    with patch('boto3.client') as mock_boto3:
-        # Setup mock S3 client
-        mock_s3 = Mock()
-        mock_boto3.return_value = mock_s3
-        
+    with patch('lambda_function.s3_client') as mock_s3:
         # Mock S3 error
         mock_s3.put_object.side_effect = Exception("S3 Access Denied")
         
