@@ -1,0 +1,197 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for Rahul HTTP Server Lambda with S3 integration'
+
+Parameters:
+  BucketName:
+    Type: String
+    Default: 'rahul-hearflow-messages'
+    Description: 'Name of the S3 bucket to store messages'
+  
+  LambdaFunctionName:
+    Type: String
+    Default: 'rahul-http-server'
+    Description: 'Name of the Lambda function'
+
+Resources:
+  # S3 Bucket for storing messages
+  MessagesBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+
+  # IAM Role for Lambda execution
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${LambdaFunctionName}-execution-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: S3AccessPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:PutObjectAcl
+                  - s3:GetObject
+                Resource: !Sub '${MessagesBucket}/*'
+
+  # Lambda Function
+  RahulHttpServerFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Runtime: python3.9
+      Handler: lambda_function.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Environment:
+        Variables:
+          S3_BUCKET_NAME: !Ref MessagesBucket
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import os
+          from datetime import datetime
+
+          # Initialize S3 client
+          s3_client = boto3.client('s3')
+
+          def lambda_handler(event, context):
+              """
+              AWS Lambda function that handles HTTP requests and saves messages to S3
+              """
+              
+              # The message to display and save
+              message = "Hi, i am rahul and joined Hearflow recently"
+              
+              # Get S3 bucket name from environment variable
+              bucket_name = os.environ.get('S3_BUCKET_NAME', 'your-s3-bucket-name')
+              
+              try:
+                  # Save message to S3 bucket
+                  timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                  file_name = f"rahul_message_{timestamp}.txt"
+                  
+                  # Upload the message to S3
+                  s3_client.put_object(
+                      Bucket=bucket_name,
+                      Key=file_name,
+                      Body=message,
+                      ContentType='text/plain'
+                  )
+                  
+                  # Return HTTP response
+                  return {
+                      'statusCode': 200,
+                      'headers': {
+                          'Content-Type': 'application/json',
+                          'Access-Control-Allow-Origin': '*',
+                          'Access-Control-Allow-Headers': 'Content-Type',
+                          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
+                      },
+                      'body': json.dumps({
+                          'message': message,
+                          'timestamp': timestamp,
+                          's3_file': file_name,
+                          'status': 'Message saved to S3 successfully'
+                      })
+                  }
+                  
+              except Exception as e:
+                  # Handle errors
+                  return {
+                      'statusCode': 500,
+                      'headers': {
+                          'Content-Type': 'application/json',
+                          'Access-Control-Allow-Origin': '*'
+                      },
+                      'body': json.dumps({
+                          'error': str(e),
+                          'message': message,
+                          'status': 'Failed to save to S3'
+                      })
+                  }
+
+  # API Gateway REST API
+  RahulApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: 'rahul-api'
+      Description: 'API Gateway for Rahul HTTP Server'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  # API Gateway Resource
+  ApiResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref RahulApi
+      ParentId: !GetAtt RahulApi.RootResourceId
+      PathPart: 'message'
+
+  # API Gateway Method
+  ApiMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref RahulApi
+      ResourceId: !Ref ApiResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+      Integration:
+        Type: AWS_PROXY
+        IntegrationHttpMethod: POST
+        Uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${RahulHttpServerFunction.Arn}/invocations'
+
+  # Lambda permission for API Gateway
+  LambdaApiGatewayPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref RahulHttpServerFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:apigateway:${AWS::Region}::/restapis/${RahulApi}/stages/*/*'
+
+  # API Gateway Deployment
+  ApiDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ApiMethod
+    Properties:
+      RestApiId: !Ref RahulApi
+      StageName: 'prod'
+
+Outputs:
+  ApiEndpoint:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${RahulApi}.execute-api.${AWS::Region}.amazonaws.com/prod/message'
+    Export:
+      Name: !Sub '${AWS::StackName}-ApiEndpoint'
+
+  S3BucketName:
+    Description: 'S3 bucket name for storing messages'
+    Value: !Ref MessagesBucket
+    Export:
+      Name: !Sub '${AWS::StackName}-S3Bucket'
+
+  LambdaFunctionArn:
+    Description: 'Lambda function ARN'
+    Value: !GetAtt RahulHttpServerFunction.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-LambdaArn'
